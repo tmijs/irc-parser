@@ -1,0 +1,41 @@
+{
+  "name": "@tmi.js/irc-parser",
+  "version": "0.1.0",
+  "description": "Parse IRC messages",
+  "type": "module",
+  "main": "./dist/index.node.mjs",
+  "browser": "./dist/index.esm-browser.min.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.node.cjs",
+      "default": "./dist/index.node.cjs"
+    }
+  },
+  "scripts": {
+    "test": "node --experimental-test-coverage test/index.mjs",
+    "build": "rm -rf dist/* && node scripts/esbuild.js && tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tmijs/irc-parser.git"
+  },
+  "keywords": [
+    "irc",
+    "parser",
+    "chat"
+  ],
+  "author": "Alca",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tmijs/irc-parser/issues"
+  },
+  "homepage": "https://github.com/tmijs/irc-parser#readme",
+  "devDependencies": {
+    "@types/node": "^20.14.13",
+    "esbuild": "^0.23.0",
+    "typescript": "^5.5.4"
+  }
+}
