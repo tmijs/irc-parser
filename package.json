@@ -3,8 +3,8 @@
   "version": "0.2.0",
   "description": "Parse IRC messages",
   "type": "module",
-  "main": "./dist/index.node.mjs",
-  "browser": "./dist/index.esm-browser.min.mjs",
+  "main": "./dist/index.mjs",
+  "browser": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
     "dist"
@@ -13,8 +13,8 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.node.cjs",
-      "default": "./dist/index.node.cjs"
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.cjs"
     }
   },
   "scripts": {
