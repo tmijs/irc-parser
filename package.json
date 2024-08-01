@@ -6,6 +6,9 @@
   "main": "./dist/index.node.mjs",
   "browser": "./dist/index.esm-browser.min.mjs",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
