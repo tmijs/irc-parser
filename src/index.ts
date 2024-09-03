@@ -125,7 +125,7 @@ interface ParsedTagData {
 
 export function parseTag(rawKey: string, rawValue: string, messageParams?: IrcMessage['params'], cb?: ParseTagCallbackFn): ParsedTagData {
 	const unescapedKey = unescapeIrc(rawKey);
-	let key: string = kebabToCamel(unescapedKey);
+	let key: string = unescapedKey;
 	const unescapedValue = unescapeIrc(rawValue);
 	let value: unknown = unescapedValue;
 	if(cb) {
@@ -152,8 +152,4 @@ export function parseTagsFromString(tagsRawString: string, messageParams?: IrcMe
 		tags[key] = value;
 	});
 	return { rawTags, tags };
-}
-
-function kebabToCamel(str: string) {
-	return str.replace(/-(\w)/g, (_, match) => match.toUpperCase());
 }

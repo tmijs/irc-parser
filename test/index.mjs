@@ -7,6 +7,15 @@ import { unescapeIrc, escapeIrc, parseTagsFromString, parseTag, parse } from '@t
 
 util.inspect.defaultOptions.depth = null;
 
+const regexKebabToCamel = /-(\w)/g;
+
+/**
+ * @param {string} str
+ */
+function kebabToCamel(str) {
+	return str.replace(regexKebabToCamel, (_, match) => match.toUpperCase());
+}
+
 describe('unescaping irc tag', t => {
 	it('does not alter empty strings', () => {
 		assert.equal(unescapeIrc(''), '');
@@ -61,10 +70,16 @@ describe('parsing irc tags', t => {
 			{ rawTags: { a: 'b', c: 'd' }, tags: { a: 'b', c: 'd' } }
 		);
 	});
+	it('preserve tag key', () => {
+		assert.deepStrictEqual(
+			parseTagsFromString('a-b=c'),
+			{ rawTags: { 'a-b': 'c' }, tags: { 'a-b': 'c' } }
+		);
+	});
 	it('using a transformation callback', () => {
 		assert.deepStrictEqual(
-			parseTagsFromString('a=0', [], (k, v, p) => [ k, parseInt(v) ]),
-			{ rawTags: { a: '0' }, tags: { a: 0 } }
+			parseTagsFromString('a-b=0', [], (k, v, p) => [ kebabToCamel(k), parseInt(v) ]),
+			{ rawTags: { 'a-b': '0' }, tags: { aB: 0 } }
 		);
 	});
 });
@@ -114,6 +129,7 @@ describe('parsing messages', t => {
 			{
 				message: 'PRIVMSG message with tag parser',
 				tagParser: (key, value, params) => {
+					key = kebabToCamel(key);
 					switch(key) {
 						case 'tmiSentTs':
 						{

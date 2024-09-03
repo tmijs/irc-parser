@@ -125,7 +125,7 @@ function parse(line, parseTagCb) {
 }
 function parseTag(rawKey, rawValue, messageParams, cb) {
   const unescapedKey = unescapeIrc(rawKey);
-  let key = kebabToCamel(unescapedKey);
+  let key = unescapedKey;
   const unescapedValue = unescapeIrc(rawValue);
   let value = unescapedValue;
   if (cb) {
@@ -146,8 +146,5 @@ function parseTagsFromString(tagsRawString, messageParams, cb) {
     tags[key] = value;
   });
   return { rawTags, tags };
-}
-function kebabToCamel(str) {
-  return str.replace(/-(\w)/g, (_, match) => match.toUpperCase());
 }
 //# sourceMappingURL=index.cjs.map
