@@ -141,7 +141,7 @@ describe('parsing messages', t => {
 			});
 		}
 	});
-	it('messages with tags', async t => {
+	it('messages with tags', t => {
 		/** @type {{ message: string; tagParser?: import('@tmi.js/irc-parser').ParseTagCallbackFn; expected: import('@tmi.js/irc-parser').IrcMessage; }[]} */
 		const tests = [
 			{
@@ -235,9 +235,7 @@ describe('parsing messages', t => {
 		];
 		for(let i = 0; i < tests.length; i++) {
 			const { message, tagParser, expected } = tests[i];
-			await t.test(message, () => {
-				assert.deepStrictEqual(parse(expected.raw, tagParser), expected);
-			});
+			assert.deepStrictEqual(parse(expected.raw, tagParser), expected, message);
 		}
 	});
 });
