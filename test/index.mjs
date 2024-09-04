@@ -240,19 +240,4 @@ describe('parsing messages', t => {
 			});
 		}
 	});
-
-	it('real messages', async t => {
-		const tests = [
-		];
-		for(let i = 0; i < tests.length; i++) {
-			const test = tests[i];
-			await t.test(`#${i}`, () => {
-				const parsed = parse(test);
-				console.log(parsed);
-				// assert.ok(parsed);
-				// assert.ok(parsed.tags);
-				// assert.ok(parsed.rawTags);
-			});
-		}
-	});
 });
