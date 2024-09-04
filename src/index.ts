@@ -69,21 +69,11 @@ export function parse(line: string, parseTagCb?: ParseTagCallbackFn): IrcMessage
 		tagsRawString = line.slice(1, tagsEnd);
 		advanceToNextSpace(tagsEnd);
 	}
-	const prefix: IrcMessage['prefix'] = { nick: undefined, user: undefined, host: undefined };
+	let prefix: IrcMessage['prefix'] = { nick: undefined, user: undefined, host: undefined };
 	if(charIs(':')) {
 		const prefixEnd = getNextSpace();
 		const prefixRaw = line.slice(offset + 1, prefixEnd);
-		if(prefixRaw.includes('!')) {
-			const [ nick, userHost ] = prefixRaw.split('!');
-			prefix.nick = nick;
-			[ prefix.user, prefix.host ] = userHost.includes('@') ? userHost.split('@') : [ userHost, undefined ];
-		}
-		else if(prefixRaw.includes('@')) {
-			[ prefix.nick, prefix.host ] = prefixRaw.split('@');
-		}
-		else {
-			prefix.host = prefixRaw;
-		}
+		prefix = parsePrefix(prefixRaw);
 		advanceToNextSpace(prefixEnd);
 	}
 	const commandEnd = getNextSpace();
@@ -152,4 +142,23 @@ export function parseTagsFromString(tagsRawString: string, messageParams?: IrcMe
 		tags[key] = value;
 	});
 	return { rawTags, tags };
+}
+
+export function parsePrefix(prefixRaw: string) {
+	const prefix: IrcMessage['prefix'] = { nick: undefined, user: undefined, host: undefined };
+	if(!prefixRaw) {
+		return prefix;
+	}
+	if(prefixRaw.includes('!')) {
+		const [ nick, userHost ] = prefixRaw.split('!');
+		prefix.nick = nick;
+		[ prefix.user, prefix.host ] = userHost.includes('@') ? userHost.split('@') : [ userHost, undefined ];
+	}
+	else if(prefixRaw.includes('@')) {
+		[ prefix.user, prefix.host ] = prefixRaw.split('@');
+	}
+	else {
+		prefix.host = prefixRaw;
+	}
+	return prefix;
 }

@@ -52,19 +52,11 @@ function parse(line, parseTagCb) {
     tagsRawString = line.slice(1, tagsEnd);
     advanceToNextSpace(tagsEnd);
   }
-  const prefix = { nick: void 0, user: void 0, host: void 0 };
+  let prefix = { nick: void 0, user: void 0, host: void 0 };
   if (charIs(":")) {
     const prefixEnd = getNextSpace();
     const prefixRaw = line.slice(offset + 1, prefixEnd);
-    if (prefixRaw.includes("!")) {
-      const [nick, userHost] = prefixRaw.split("!");
-      prefix.nick = nick;
-      [prefix.user, prefix.host] = userHost.includes("@") ? userHost.split("@") : [userHost, void 0];
-    } else if (prefixRaw.includes("@")) {
-      [prefix.nick, prefix.host] = prefixRaw.split("@");
-    } else {
-      prefix.host = prefixRaw;
-    }
+    prefix = parsePrefix(prefixRaw);
     advanceToNextSpace(prefixEnd);
   }
   const commandEnd = getNextSpace();
@@ -119,9 +111,26 @@ function parseTagsFromString(tagsRawString, messageParams, cb) {
   });
   return { rawTags, tags };
 }
+function parsePrefix(prefixRaw) {
+  const prefix = { nick: void 0, user: void 0, host: void 0 };
+  if (!prefixRaw) {
+    return prefix;
+  }
+  if (prefixRaw.includes("!")) {
+    const [nick, userHost] = prefixRaw.split("!");
+    prefix.nick = nick;
+    [prefix.user, prefix.host] = userHost.includes("@") ? userHost.split("@") : [userHost, void 0];
+  } else if (prefixRaw.includes("@")) {
+    [prefix.user, prefix.host] = prefixRaw.split("@");
+  } else {
+    prefix.host = prefixRaw;
+  }
+  return prefix;
+}
 export {
   escapeIrc,
   parse,
+  parsePrefix,
   parseTag,
   parseTagsFromString,
   unescapeIrc

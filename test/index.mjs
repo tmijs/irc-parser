@@ -3,7 +3,7 @@
 import util from 'node:util';
 import { describe, it, todo } from 'node:test';
 import assert from 'node:assert/strict';
-import { unescapeIrc, escapeIrc, parseTagsFromString, parseTag, parse } from '@tmi.js/irc-parser';
+import { unescapeIrc, escapeIrc, parseTagsFromString, parseTag, parse, parsePrefix } from '@tmi.js/irc-parser';
 
 util.inspect.defaultOptions.depth = null;
 
@@ -81,6 +81,24 @@ describe('parsing irc tags', t => {
 			parseTagsFromString('a-b=0', [], (k, v, p) => [ kebabToCamel(k), parseInt(v) ]),
 			{ rawTags: { 'a-b': '0' }, tags: { aB: 0 } }
 		);
+	});
+});
+
+describe('parsing irc prefix', t => {
+	it('empty string is all undefined', () => {
+		assert.deepStrictEqual(parsePrefix(''), { nick: undefined, user: undefined, host: undefined });
+	});
+	it('parses host only', () => {
+		assert.deepStrictEqual(parsePrefix('host'), { nick: undefined, user: undefined, host: 'host' });
+	});
+	it('parses user and host', () => {
+		assert.deepStrictEqual(parsePrefix('user@host'), { nick: undefined, user: 'user', host: 'host' });
+	});
+	it('parses nick and user', () => {
+		assert.deepStrictEqual(parsePrefix('nick!user'), { nick: 'nick', user: 'user', host: undefined });
+	});
+	it('parses full', () => {
+		assert.deepStrictEqual(parsePrefix('nick!user@host'), { nick: 'nick', user: 'user', host: 'host' });
 	});
 });
 

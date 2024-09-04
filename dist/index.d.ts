@@ -24,4 +24,5 @@ interface ParsedTags {
     tags: IrcMessage['tags'];
 }
 export declare function parseTagsFromString(tagsRawString: string, messageParams?: IrcMessage['params'], cb?: ParseTagCallbackFn): ParsedTags;
+export declare function parsePrefix(prefixRaw: string): Record<"nick" | "user" | "host", string | undefined>;
 export {};
