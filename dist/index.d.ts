@@ -11,7 +11,8 @@ export interface IrcMessage {
 export type ParseTagCallbackFn = (key: string, value: string, messageParams: IrcMessage['params']) => [key: string, value: any];
 export declare function unescapeIrc(value: string): string;
 export declare function escapeIrc(value: string | number): string;
-export declare function parse(line: string, parseTagCb?: ParseTagCallbackFn): IrcMessage | undefined;
+export declare function parse(line: string, parseTagCb?: ParseTagCallbackFn): IrcMessage;
+export declare function parse(line: '', parseTagCb?: ParseTagCallbackFn): undefined;
 interface ParsedTagData {
     unescapedKey: string;
     unescapedValue: string;
