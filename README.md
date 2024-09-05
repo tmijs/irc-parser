@@ -1,6 +1,6 @@
-# @tmi.js/parser
+# @tmi.js/irc-parser
 
-IRC parsing package for the @tmi.js/chat library
+IRC parsing package for the `@tmi.js/chat` library
 
 # Install
 
