@@ -52,7 +52,7 @@ function parse(line, parseTagCb) {
     tagsRawString = line.slice(1, tagsEnd);
     advanceToNextSpace(tagsEnd);
   }
-  let prefix = { nick: void 0, user: void 0, host: void 0 };
+  let prefix = {};
   if (charIs(":")) {
     const prefixEnd = getNextSpace();
     const prefixRaw = line.slice(offset + 1, prefixEnd);
@@ -121,7 +121,7 @@ function parseTagsFromString(tagsRawString, messageParams, cb) {
   return { rawTags, tags };
 }
 function parsePrefix(prefixRaw) {
-  const prefix = { nick: void 0, user: void 0, host: void 0 };
+  const prefix = {};
   if (!prefixRaw) {
     return prefix;
   }

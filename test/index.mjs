@@ -86,16 +86,16 @@ describe('parsing irc tags', t => {
 
 describe('parsing irc prefix', t => {
 	it('empty string is all undefined', () => {
-		assert.deepStrictEqual(parsePrefix(''), { nick: undefined, user: undefined, host: undefined });
+		assert.deepStrictEqual(parsePrefix(''), {});
 	});
 	it('parses host only', () => {
-		assert.deepStrictEqual(parsePrefix('host'), { nick: undefined, user: undefined, host: 'host' });
+		assert.deepStrictEqual(parsePrefix('host'), { host: 'host' });
 	});
 	it('parses user and host', () => {
-		assert.deepStrictEqual(parsePrefix('user@host'), { nick: undefined, user: 'user', host: 'host' });
+		assert.deepStrictEqual(parsePrefix('user@host'), { user: 'user', host: 'host' });
 	});
 	it('parses nick and user', () => {
-		assert.deepStrictEqual(parsePrefix('nick!user'), { nick: 'nick', user: 'user', host: undefined });
+		assert.deepStrictEqual(parsePrefix('nick!user'), { host: undefined, nick: 'nick', user: 'user' });
 	});
 	it('parses full', () => {
 		assert.deepStrictEqual(parsePrefix('nick!user@host'), { nick: 'nick', user: 'user', host: 'host' });
@@ -115,7 +115,7 @@ describe('parsing messages', t => {
 					channel: '',
 					command: 'PING',
 					params: [],
-					prefix: { host: undefined, nick: undefined, user: undefined },
+					prefix: {},
 					raw: 'PING',
 					rawTags: {},
 					tags: {},
@@ -127,7 +127,7 @@ describe('parsing messages', t => {
 					channel: '',
 					command: 'PING',
 					params: [ 'tmi.twitch.tv' ],
-					prefix: { host: undefined, nick: undefined, user: undefined },
+					prefix: {},
 					raw: 'PING :tmi.twitch.tv',
 					rawTags: {},
 					tags: {},

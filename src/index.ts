@@ -2,7 +2,7 @@ export type ChannelString = `#${string}`;
 
 export interface IrcMessage {
 	raw: string;
-	prefix: Record<'nick' | 'user' | 'host', string | undefined>;
+	prefix: Partial<Record<'nick' | 'user' | 'host', string>>;
 	command: string;
 	channel: '' | ChannelString;
 	params: string[];
@@ -71,7 +71,7 @@ export function parse(line: string, parseTagCb?: ParseTagCallbackFn): IrcMessage
 		tagsRawString = line.slice(1, tagsEnd);
 		advanceToNextSpace(tagsEnd);
 	}
-	let prefix: IrcMessage['prefix'] = { nick: undefined, user: undefined, host: undefined };
+	let prefix: IrcMessage['prefix'] = {};
 	if(charIs(':')) {
 		const prefixEnd = getNextSpace();
 		const prefixRaw = line.slice(offset + 1, prefixEnd);
@@ -165,7 +165,7 @@ export function parseTagsFromString(tagsRawString: string, messageParams?: IrcMe
 }
 
 export function parsePrefix(prefixRaw: string) {
-	const prefix: IrcMessage['prefix'] = { nick: undefined, user: undefined, host: undefined };
+	const prefix: IrcMessage['prefix'] = {};
 	if(!prefixRaw) {
 		return prefix;
 	}
