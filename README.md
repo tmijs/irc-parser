@@ -11,8 +11,16 @@ npm i @tmi.js/irc-parser
 # Usage
 
 ```ts
-import { unescapeIrc, escapeIrc, parseTagsFromString, parseTag, parse, parsePrefix, format, formatTags, formatChannel, formatPrefix } from '@tmi.js/irc-parser';
-import type { IrcMessage, ChannelString, FormatMessage, ParsedTags, ParsedTagData, ParseTagCallbackFn } from '@tmi.js/irc-parser';
+import {
+	parse, parseTagsFromString, parseTag, parsePrefix,
+	format, formatTags, formatChannel, formatPrefix,
+	unescapeIrc, escapeIrc
+} from '@tmi.js/irc-parser';
+import type {
+	IrcMessage, ChannelString,
+	ParsedTags, ParsedTagData, ParseTagCallbackFn,
+	FormatMessage
+} from '@tmi.js/irc-parser';
 
 function handleMessage(ircString: string) {
 	const ircMessage = parse(ircString, (key, value, params) => {
