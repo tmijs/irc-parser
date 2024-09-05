@@ -112,7 +112,7 @@ export interface FormatMessage {
 	tags?: IrcMessage['tags'];
 	command: IrcMessage['command'];
 	prefix?: IrcMessage['prefix'];
-	channel?: IrcMessage['channel'];
+	channel?: string;
 	params?: IrcMessage['params'];
 }
 
@@ -201,6 +201,6 @@ export function formatPrefix(prefix: IrcMessage['prefix']) {
 	return `${nick}${user ? `!${user}` : ''}${host ? `@${host}` : ''}`;
 }
 
-export function formatChannel(channel: IrcMessage['channel']) {
+export function formatChannel(channel: string) {
 	return channel ? `${channel.startsWith('#') ? channel : `#${channel}`}` : '';
 }
