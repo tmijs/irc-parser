@@ -21,6 +21,10 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var src_exports = {};
 __export(src_exports, {
   escapeIrc: () => escapeIrc,
+  format: () => format,
+  formatChannel: () => formatChannel,
+  formatPrefix: () => formatPrefix,
+  formatTags: () => formatTags,
   parse: () => parse,
   parsePrefix: () => parsePrefix,
   parseTag: () => parseTag,
@@ -116,6 +120,15 @@ function parse(line, parseTagCb) {
   const ircMessage = { raw, rawTags, tags, prefix, command, channel, params };
   return ircMessage;
 }
+function format(ircMessage) {
+  const { tags, prefix: p, command, channel, params } = ircMessage;
+  const prefixWith = (n, c = " ") => n ? `${c}${n}` : null;
+  const tagsStr = tags ? prefixWith(formatTags(tags), "@") : null;
+  const prefixStr = p ? prefixWith(formatPrefix(p), ":") : null;
+  const channelStr = channel ? formatChannel(channel) : null;
+  const paramsStr = params && params.length ? prefixWith(params.join(" "), ":") : null;
+  return [tagsStr, prefixStr, command, channelStr, paramsStr].filter(Boolean).join(" ");
+}
 function parseTag(rawKey, rawValue, messageParams, cb) {
   const unescapedKey = unescapeIrc(rawKey);
   let key = unescapedKey;
@@ -155,5 +168,24 @@ function parsePrefix(prefixRaw) {
     prefix.host = prefixRaw;
   }
   return prefix;
+}
+function formatTags(tags) {
+  const entries = Array.isArray(tags) ? tags : Object.entries(tags);
+  return entries.map(
+    ([key, value]) => `${escapeIrc(key)}=${escapeIrc(value.toString())}`
+  ).join(";");
+}
+function formatPrefix(prefix) {
+  if (!prefix) {
+    return "";
+  }
+  const { nick, user, host } = prefix;
+  if (!nick) {
+    return "";
+  }
+  return `${nick}${user ? `!${user}` : ""}${host ? `@${host}` : ""}`;
+}
+function formatChannel(channel) {
+  return channel ? `${channel.startsWith("#") ? channel : `#${channel}`}` : "";
 }
 //# sourceMappingURL=index.cjs.map

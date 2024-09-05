@@ -13,6 +13,14 @@ export declare function unescapeIrc(value: string): string;
 export declare function escapeIrc(value: string | number): string;
 export declare function parse(line: string, parseTagCb?: ParseTagCallbackFn): IrcMessage;
 export declare function parse(line: '', parseTagCb?: ParseTagCallbackFn): undefined;
+interface FormatMessage {
+    tags?: IrcMessage['tags'];
+    command: IrcMessage['command'];
+    prefix?: IrcMessage['prefix'];
+    channel?: IrcMessage['channel'];
+    params?: IrcMessage['params'];
+}
+export declare function format(ircMessage: FormatMessage): string;
 interface ParsedTagData {
     unescapedKey: string;
     unescapedValue: string;
@@ -26,4 +34,7 @@ interface ParsedTags {
 }
 export declare function parseTagsFromString(tagsRawString: string, messageParams?: IrcMessage['params'], cb?: ParseTagCallbackFn): ParsedTags;
 export declare function parsePrefix(prefixRaw: string): Record<"nick" | "user" | "host", string | undefined>;
+export declare function formatTags(tags: Record<string, string> | [string, string][]): string;
+export declare function formatPrefix(prefix: IrcMessage['prefix']): string;
+export declare function formatChannel(channel: IrcMessage['channel']): string;
 export {};

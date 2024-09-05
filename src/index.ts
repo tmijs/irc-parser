@@ -108,6 +108,24 @@ export function parse(line: string, parseTagCb?: ParseTagCallbackFn): IrcMessage
 	return ircMessage;
 }
 
+interface FormatMessage {
+	tags?: IrcMessage['tags'];
+	command: IrcMessage['command'];
+	prefix?: IrcMessage['prefix'];
+	channel?: IrcMessage['channel'];
+	params?: IrcMessage['params'];
+}
+
+export function format(ircMessage: FormatMessage): string {
+	const { tags, prefix: p, command, channel, params } = ircMessage;
+	const prefixWith = (n: string, c: string = ' ') => n ? `${c}${n}` : null;
+	const tagsStr = tags ? prefixWith(formatTags(tags), '@') : null;
+	const prefixStr = p ? prefixWith(formatPrefix(p), ':') : null;
+	const channelStr = channel ? formatChannel(channel) : null;
+	const paramsStr = params && params.length ? prefixWith(params.join(' '), ':') : null;
+	return [ tagsStr, prefixStr, command, channelStr, paramsStr ].filter(Boolean).join(' ');
+}
+
 interface ParsedTagData {
 	unescapedKey: string;
 	unescapedValue: string;
@@ -163,4 +181,26 @@ export function parsePrefix(prefixRaw: string) {
 		prefix.host = prefixRaw;
 	}
 	return prefix;
+}
+
+export function formatTags(tags: Record<string, string> | [ string, string ][]): string {
+	const entries = Array.isArray(tags) ? tags : Object.entries(tags);
+	return entries.map(([ key, value ]) =>
+		`${escapeIrc(key)}=${escapeIrc(value.toString())}`
+	).join(';');
+}
+
+export function formatPrefix(prefix: IrcMessage['prefix']) {
+	if(!prefix) {
+		return '';
+	}
+	const { nick, user, host } = prefix;
+	if(!nick) {
+		return '';
+	}
+	return `${nick}${user ? `!${user}` : ''}${host ? `@${host}` : ''}`;
+}
+
+export function formatChannel(channel: IrcMessage['channel']) {
+	return channel ? `${channel.startsWith('#') ? channel : `#${channel}`}` : '';
 }

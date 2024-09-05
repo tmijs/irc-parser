@@ -3,7 +3,7 @@
 import util from 'node:util';
 import { describe, it, todo } from 'node:test';
 import assert from 'node:assert/strict';
-import { unescapeIrc, escapeIrc, parseTagsFromString, parseTag, parse, parsePrefix } from '@tmi.js/irc-parser';
+import { unescapeIrc, escapeIrc, parseTagsFromString, parseTag, parse, parsePrefix, format, formatTags } from '@tmi.js/irc-parser';
 
 util.inspect.defaultOptions.depth = null;
 
@@ -237,5 +237,21 @@ describe('parsing messages', t => {
 			const { message, tagParser, expected } = tests[i];
 			assert.deepStrictEqual(parse(expected.raw, tagParser), expected, message);
 		}
+	});
+});
+
+describe('formatting messages', t => {
+	it('basic messages', async t => {
+		assert.equal(format({
+			command: 'PING',
+		}), 'PING');
+		assert.equal(format({
+			command: 'PING',
+			prefix: { nick: undefined, user: undefined, host: 'tmi.twitch.tv' },
+		}), 'PING');
+	});
+	it('messages with tags', async t => {
+		const example = "@badge-info=;badges=;client-nonce=nonce;color=#FF4500;display-name=Name_1;emotes=;first-msg=0;flags=;id=uuid_3;mod=0;reply-parent-display-name=Name_2;reply-parent-msg-body=@Name_1\\shey,\\swhat's\\sgoing\\son?;reply-parent-msg-id=uuid_1;reply-parent-user-id=11111;reply-parent-user-login=name_1;reply-thread-parent-display-name=Name_1;reply-thread-parent-msg-id=uuid_2;reply-thread-parent-user-id=22222;reply-thread-parent-user-login=name_2;returning-chatter=0;room-id=33333;subscriber=0;tmi-sent-ts=1700000000000;turbo=0;user-id=22222;user-type= :name_2!name_2@name_2.tmi.twitch.tv PRIVMSG #channel :@Name_2 not much";
+		assert.equal(format(parse(example)), example);
 	});
 });
