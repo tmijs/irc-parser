@@ -108,7 +108,7 @@ export function parse(line: string, parseTagCb?: ParseTagCallbackFn): IrcMessage
 	return ircMessage;
 }
 
-interface FormatMessage {
+export interface FormatMessage {
 	tags?: IrcMessage['tags'];
 	command: IrcMessage['command'];
 	prefix?: IrcMessage['prefix'];
@@ -126,7 +126,7 @@ export function format(ircMessage: FormatMessage): string {
 	return [ tagsStr, prefixStr, command, channelStr, paramsStr ].filter(Boolean).join(' ');
 }
 
-interface ParsedTagData {
+export interface ParsedTagData {
 	unescapedKey: string;
 	unescapedValue: string;
 	key: string;
@@ -144,7 +144,7 @@ export function parseTag(rawKey: string, rawValue: string, messageParams?: IrcMe
 	return { unescapedKey, unescapedValue, key, value };
 }
 
-interface ParsedTags {
+export interface ParsedTags {
 	rawTags: IrcMessage['rawTags'];
 	tags: IrcMessage['tags'];
 }
