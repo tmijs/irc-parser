@@ -13,22 +13,22 @@ export declare function unescapeIrc(value: string): string;
 export declare function escapeIrc(value: string | number): string;
 export declare function parse(line: string, parseTagCb?: ParseTagCallbackFn): IrcMessage;
 export declare function parse(line: '', parseTagCb?: ParseTagCallbackFn): undefined;
-interface FormatMessage {
+export interface FormatMessage {
     tags?: IrcMessage['tags'];
     command: IrcMessage['command'];
     prefix?: IrcMessage['prefix'];
-    channel?: IrcMessage['channel'];
+    channel?: string;
     params?: IrcMessage['params'];
 }
 export declare function format(ircMessage: FormatMessage): string;
-interface ParsedTagData {
+export interface ParsedTagData {
     unescapedKey: string;
     unescapedValue: string;
     key: string;
     value: unknown;
 }
 export declare function parseTag(rawKey: string, rawValue: string, messageParams?: IrcMessage['params'], cb?: ParseTagCallbackFn): ParsedTagData;
-interface ParsedTags {
+export interface ParsedTags {
     rawTags: IrcMessage['rawTags'];
     tags: IrcMessage['tags'];
 }
@@ -36,5 +36,4 @@ export declare function parseTagsFromString(tagsRawString: string, messageParams
 export declare function parsePrefix(prefixRaw: string): Partial<Record<"nick" | "user" | "host", string>>;
 export declare function formatTags(tags: Record<string, string> | [string, string][]): string;
 export declare function formatPrefix(prefix: IrcMessage['prefix']): string;
-export declare function formatChannel(channel: IrcMessage['channel']): string;
-export {};
+export declare function formatChannel(channel: string): string;

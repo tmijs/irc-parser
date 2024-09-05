@@ -11,8 +11,8 @@ npm i @tmi.js/irc-parser
 # Usage
 
 ```ts
-import { escapeIrc, parse, unescapeIrc, parseTagsFromString, parseTag } from '@tmi.js/irc-parser';
-import type { IrcMessage } from '@tmi.js/irc-parser';
+import { unescapeIrc, escapeIrc, parseTagsFromString, parseTag, parse, parsePrefix, format, formatTags, formatChannel, formatPrefix } from '@tmi.js/irc-parser';
+import type { IrcMessage, ChannelString, FormatMessage, ParsedTags, ParsedTagData, ParseTagCallbackFn } from '@tmi.js/irc-parser';
 
 function handleMessage(ircString: string) {
 	const ircMessage = parse(ircString, (key, value, params) => {
@@ -25,10 +25,13 @@ function handleMessage(ircString: string) {
 	const { channel, command, params, prefix, tags } = ircMessage;
 	switch(command) {
 		case 'PING':
-			// Respond to PING
+			ws.send(format({ command: 'PONG' }));
 			break;
 		case 'PRIVMSG':
 			console.log(`[${channel}] <${prefix.user}> ${params[0]}`);
+			if(params[0].startsWith('!help')) {
+				ws.send(format({ command: 'PRIVMSG', channel, params: [ helpString ] }));
+			}
 			break;
 	}
 }

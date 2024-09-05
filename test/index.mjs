@@ -3,7 +3,7 @@
 import util from 'node:util';
 import { describe, it, todo } from 'node:test';
 import assert from 'node:assert/strict';
-import { unescapeIrc, escapeIrc, parseTagsFromString, parseTag, parse, parsePrefix, format, formatTags } from '@tmi.js/irc-parser';
+import { unescapeIrc, escapeIrc, parseTagsFromString, parseTag, parse, parsePrefix, format, formatTags, formatChannel, formatPrefix } from '@tmi.js/irc-parser';
 
 util.inspect.defaultOptions.depth = null;
 
