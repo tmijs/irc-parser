@@ -103,8 +103,10 @@ describe('parsing irc prefix', t => {
 });
 
 describe('parsing messages', t => {
-	it('empty string is undefined', () => {
-		assert.deepStrictEqual(parse(''), undefined);
+	it('empty string is empty', () => {
+		assert.deepStrictEqual(parse(''), {
+			raw: '', prefix: {}, command: '', channel: '', params: [], rawTags: {}, tags: {}
+		});
 	});
 	it('basic messages', async t => {
 		/** @type {{ message: string; expected: import('@tmi.js/irc-parser').IrcMessage; }[]} */

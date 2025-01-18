@@ -41,11 +41,9 @@ export function escapeIrc(value: string | number) {
 	return value.replace(/[\s\n\r;\\]/g, match => '\\' + ircUnescapedChars[match as keyof typeof ircUnescapedChars] || match);
 }
 
-export function parse(line: string, parseTagCb?: ParseTagCallbackFn): IrcMessage;
-export function parse(line: '', parseTagCb?: ParseTagCallbackFn): undefined;
-export function parse(line: string, parseTagCb?: ParseTagCallbackFn): IrcMessage | undefined {
+export function parse(line: string, parseTagCb?: ParseTagCallbackFn): IrcMessage {
 	if(!line) {
-		return;
+		return { raw: '', prefix: {}, command: '', channel: '', params: [], rawTags: {}, tags: {} };
 	}
 	let offset = 0;
 	const getNextSpace = () => line.indexOf(' ', offset);

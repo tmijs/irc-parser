@@ -60,7 +60,7 @@ function escapeIrc(value) {
 }
 function parse(line, parseTagCb) {
   if (!line) {
-    return;
+    return { raw: "", prefix: {}, command: "", channel: "", params: [], rawTags: {}, tags: {} };
   }
   let offset = 0;
   const getNextSpace = () => line.indexOf(" ", offset);
