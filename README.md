@@ -22,11 +22,16 @@ import type {
 	FormatMessage
 } from '@tmi.js/irc-parser';
 
+handleMessage('@a-number-key=123;a-boolean-key=true :username@irc.example.com PRIVMSG #channel :Hello, world!');
+// [#channel] <username> Hello, world!
+
 function handleMessage(ircString: string) {
 	const ircMessage = parse(ircString, (key, value, params) => {
 		switch(key) {
-			case 'aNumberKey': return [ key, parseInt(value, 10) ];
-			case 'aBooleanKey': return [ key, value === '1' || value === 'true' ];
+			case 'a-number-key':
+				return [ key, parseInt(value, 10) ];
+			case 'a-boolean-key':
+				return [ key, value === '1' || value === 'true' ];
 		}
 		return [ key, value ];
 	});
@@ -38,7 +43,11 @@ function handleMessage(ircString: string) {
 		case 'PRIVMSG':
 			console.log(`[${channel}] <${prefix.user}> ${params[0]}`);
 			if(params[0].startsWith('!help')) {
-				ws.send(format({ command: 'PRIVMSG', channel, params: [ helpString ] }));
+				ws.send(format({
+					command: 'PRIVMSG',
+					channel,
+					params: [ helpString ]
+				}));
 			}
 			break;
 	}
