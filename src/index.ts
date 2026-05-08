@@ -1,8 +1,10 @@
 export type ChannelString = `#${string}`;
 
+export type IrcPrefix = Partial<Record<'nick' | 'user' | 'host', string>>;
+
 export interface IrcMessage {
 	raw: string;
-	prefix: Partial<Record<'nick' | 'user' | 'host', string>>;
+	prefix: IrcPrefix;
 	command: string;
 	channel: '' | ChannelString;
 	params: string[];
