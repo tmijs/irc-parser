@@ -1,7 +1,8 @@
 export type ChannelString = `#${string}`;
+export type IrcPrefix = Partial<Record<'nick' | 'user' | 'host', string>>;
 export interface IrcMessage {
     raw: string;
-    prefix: Partial<Record<'nick' | 'user' | 'host', string>>;
+    prefix: IrcPrefix;
     command: string;
     channel: '' | ChannelString;
     params: string[];
@@ -16,7 +17,7 @@ export interface FormatMessage {
     tags?: IrcMessage['tags'];
     command: IrcMessage['command'];
     prefix?: IrcMessage['prefix'];
-    channel?: string;
+    channel?: string | string[];
     params?: IrcMessage['params'];
 }
 export declare function format(ircMessage: FormatMessage): string;
@@ -35,4 +36,4 @@ export declare function parseTagsFromString(tagsRawString: string, messageParams
 export declare function parsePrefix(prefixRaw: string): Partial<Record<"nick" | "user" | "host", string>>;
 export declare function formatTags(tags: Record<string, string> | [string, string][]): string;
 export declare function formatPrefix(prefix: IrcMessage['prefix']): string;
-export declare function formatChannel(channel: string): string;
+export declare function formatChannel(channel: string | string[]): string;

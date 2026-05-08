@@ -186,6 +186,9 @@ function formatPrefix(prefix) {
   return `${nick}${user ? `!${user}` : ""}${host ? `@${host}` : ""}`;
 }
 function formatChannel(channel) {
+  if (Array.isArray(channel)) {
+    return channel.map(formatChannel).join(",");
+  }
   return channel ? `${channel.startsWith("#") ? channel : `#${channel}`}` : "";
 }
 //# sourceMappingURL=index.cjs.map
