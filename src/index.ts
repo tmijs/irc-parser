@@ -110,7 +110,7 @@ export interface FormatMessage {
 	tags?: IrcMessage['tags'];
 	command: IrcMessage['command'];
 	prefix?: IrcMessage['prefix'];
-	channel?: string;
+	channel?: string | string[];
 	params?: IrcMessage['params'];
 }
 
@@ -199,6 +199,9 @@ export function formatPrefix(prefix: IrcMessage['prefix']) {
 	return `${nick}${user ? `!${user}` : ''}${host ? `@${host}` : ''}`;
 }
 
-export function formatChannel(channel: string) {
+export function formatChannel(channel: string | string[]): string {
+	if(Array.isArray(channel)) {
+		return channel.map(formatChannel).join(',');
+	}
 	return channel ? `${channel.startsWith('#') ? channel : `#${channel}`}` : '';
 }
